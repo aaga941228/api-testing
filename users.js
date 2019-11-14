@@ -1,63 +1,66 @@
+const cuuid = require('cuuid')
+
 module.exports = [
   {
-    "id": 0,
+    "id": cuuid(),
     "firstName": "Clementina",
     "lastName": "DuBuque",
     "age": 21
   },
   {
-    "id": 1,
+    "id": cuuid(),
     "firstName": "Leanne",
     "lastName": "Graham",
     "age": 34
   },
   {
-    "id": 2,
+    "id": cuuid(),
     "firstName": "Ervin",
     "lastName": "Howell",
     "age": 35
   },
   {
-    "id": 3,
+    "id": cuuid(),
     "firstName": "Clementine",
     "lastName": "Bauch",
     "age": 65
   },
   {
-    "id": 4,
+    "id": cuuid(),
     "firstName": "Patricia",
     "lastName": "Lebsack",
     "age": 45
   },
   {
-    "id": 5,
+    "id": cuuid(),
     "firstName": "Chelsey",
     "lastName": "Dietrich",
     "age": 35
   },
   {
-    "id": 6,
+    "id": cuuid(),
     "firstName": "Mrs. Dennis",
     "lastName": "Schulist",
     "age": 16
   },
   {
-    "id": 7,
+    "id": cuuid(),
     "firstName": "Kurtis",
     "lastName": "Weissnat",
     "age": 45
   },
   {
-    "id": 8,
+    "id": cuuid(),
     "firstName": "Nicholas",
     "lastName": "Runolfsdottir V",
     "age": 43
   },
   {
-    "id": 9,
+    "id": cuuid(),
     "firstName": "Glenna",
     "lastName": "Reichert",
     "age": 19
   }
 ]
+
 

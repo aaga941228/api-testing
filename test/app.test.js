@@ -61,7 +61,7 @@ describe('appointment app', function () {
 
   it('should add a new user when add a user', function (done) {
     supertest(app)
-      .post('/user')
+      .post('/users')
       .send({
         firstName: 'john',
         lastName: 'doe',

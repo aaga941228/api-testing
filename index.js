@@ -10,7 +10,7 @@ app.set('port', process.env.PORT || 8080)
 
 // middlewares
 app.use(express.json())
-app.use(morgan('tiny'))
+app.use(morgan('dev'))
 app.use(cors())
 
 // routes
