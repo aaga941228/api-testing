@@ -64,7 +64,7 @@ router
       res.status(400).json({ response: 'user not found' })
       return
     }
-    const { firstName, lastName } = req.body
+    const { firstName, lastName, age } = req.body
     if (firstName === '' || lastName === '') {
       res.status(400).json({ response: 'fristName and lastName are required' })
       return
