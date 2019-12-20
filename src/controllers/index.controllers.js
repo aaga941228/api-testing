@@ -1,4 +1,5 @@
 const usersArray = require('../../users')
+const cuuid = require('cuuid')
 
 module.exports = {
   getUsers: (req, res) => {
@@ -61,8 +62,8 @@ module.exports = {
       res.status(400).json({ response: 'FristName and lastName are required' })
       return
     }
-    if (firstName.match(/[^A-Za-z]+/) || lastName.match(/[^A-Za-z]+/)) {
-      res.status(400).json({ response: 'FirstName and lastName must be a String' })
+    if (!firstName.match(/^[A-Za-z]+$/) || !lastName.match(/^[A-Za-z]+$/)) {
+      res.status(400).json({ response: 'FirstName and lastName must only contain letters' })
       return
     }
     if (age <= 0 || isNaN(age)) {
