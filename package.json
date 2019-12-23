@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./index.js",
+    "dev": "nodemon ./src/index.js",
     "test": "mocha ./test/**/*.test.js --reporter progress --timeout=5000"
   },
   "keywords": [],
@@ -15,10 +15,12 @@
     "express": "^4.17.1",
     "mocha": "^6.2.2",
     "morgan": "^1.9.1",
+    "nodemon": "^2.0.2",
     "supertest": "^4.0.2"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "cuuid": "^0.3.0"
+    "@hapi/joi": "^16.1.8",
+    "cuuid": "^0.3.0",
+    "ejs-mate": "^3.0.0"
   }
 }
