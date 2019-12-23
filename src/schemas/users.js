@@ -35,7 +35,7 @@ const userSchema = Joi.object({
     .max(2013)
     .required(),
 
-  email: Join.string()
+  email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "es"] } })
     .required()
 });

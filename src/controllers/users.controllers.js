@@ -16,17 +16,30 @@ module.exports = {
   postUser: (req, res) => {
     const user = req.body;
     const result = userSchema.validate(user);
-    userService.create(user);
-    res.send(result.error);
+    userService.createOne(user);
+    const response = !!result.error
+      ? result.error.details
+      : "User created successfully";
+    const status = !!result.error ? 400 : 201;
+    res.status(status).send(response);
   },
 
   deleteUser: (req, res) => {
     const { id } = req.params;
-    userService.delete(id);
-    res.status(204).json("User deleted successfully");
+    userService.deleteOne(id);
+    const status = !!result.error ? 400 : 204;
+    res.status(status).send("User deleted successfully");
   },
 
   putUser: (req, res) => {
-    res.send("User updated successfully");
+    const { id } = req.params;
+    const user = req.body;
+    const result = userSchema.validate(user);
+    userService.updateOne(user, id);
+    const response = !!result.error
+      ? result.error.details
+      : "User updated successfully";
+    const status = !!result.error ? 400 : 200;
+    res.status(status).send(response);
   }
 };

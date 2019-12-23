@@ -1,10 +1,11 @@
 const users = [];
 
 const userService = {
-  create: user => users.push(user),
+  createOne: user => users.push(user),
   getAll: () => users,
   getById: id => users[id],
-  delete: id => {
+  updateOne: (user, id) => (users[id] = user),
+  deleteOne: id => {
     users[id] = undefined;
   }
 };
