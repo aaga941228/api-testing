@@ -7,6 +7,7 @@ const morgan = require("morgan");
 
 // initializing
 const app = express();
+require("./database/sequelize");
 
 // settings
 app.set("port", process.env.PORT || 3000);
