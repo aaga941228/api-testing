@@ -1,18 +1,18 @@
 const router = require("express").Router();
 const {
+  getUsers,
   getUser,
   postUser,
   deleteUser,
-  putUser,
-  userNotFound,
-  inputsValidation
-} = require("../controllers");
+  putUser
+} = require("../controllers/users.controllers");
+const exists = require('../middlewares/exists')
 
 router
-  .use("/:id", userNotFound)
-  .get("/:id", getUser)
-  .delete("/:id", deleteUser)
+  .get("/", getUsers)
+  .get("/:id", exists(userService), getUser)
   .post("/", inputsValidation, postUser)
-  .put("/:id", inputsValidation, putUser);
+  .put("/:id", exists(userService), putUser);
+  .delete("/:id", exists(userService), deleteUser)
 
 module.exports = router;

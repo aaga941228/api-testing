@@ -20,7 +20,6 @@
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",
-    "cuuid": "^0.3.0",
     "ejs-mate": "^3.0.0"
   }
 }
