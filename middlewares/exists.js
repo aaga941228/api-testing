@@ -1,10 +1,16 @@
+const createError = require("http-errors");
+
 module.exports = function(service) {
-  return function(req, res, next) {
+  return async function(req, res, next) {
     const { id } = req.params;
-    const foundResource = service.getById(id);
-    if (!foundResource) {
-      throw new Error("Resource was not found");
+    try {
+      const user = await service.getById(id);
+      if (!user) {
+        next(createError(404));
+      }
+      next();
+    } catch (err) {
+      next(err);
     }
-    next();
   };
 };

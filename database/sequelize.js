@@ -63,16 +63,9 @@ User.init(
   }
 );
 
-User.sync({ force: true }).then(() => {
-  return User.create({
-    id: 1,
-    firstName: "John",
-    lastName: "Hancock",
-    username: "John123",
-    password: "password",
-    birthYear: 1990,
-    email: "john@test.com"
-  });
-});
+User.sync();
 
-module.exports = sequelize;
+module.exports = {
+  sequelize,
+  userModel: sequelize.models.user
+};

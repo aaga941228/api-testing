@@ -1,13 +1,11 @@
-const users = [];
+const { userModel } = require("../database/sequelize");
 
 const userService = {
-  createOne: user => users.push(user),
-  getAll: () => users,
-  getById: id => users[id],
-  updateOne: (user, id) => (users[id] = user),
-  deleteOne: id => {
-    users[id] = undefined;
-  }
+  getAll: () => userModel.findAll(),
+  getById: id => userModel.findOne({ where: { id } }),
+  createOne: user => userModel.create(user),
+  updateOne: (user, id) => userModel.update(user, { where: { id } }),
+  deleteOne: id => userModel.destroy({ where: { id } })
 };
 
 module.exports = userService;

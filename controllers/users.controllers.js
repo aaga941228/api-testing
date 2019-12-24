@@ -2,44 +2,63 @@ const userService = require("../services/users");
 const userSchema = require("../schemas/users");
 
 module.exports = {
-  getUsers: (req, res) => {
-    const users = userService.getAll();
-    res.status(200).json(users);
+  getUsers: async (req, res, next) => {
+    try {
+      const users = await userService.getAll();
+      res.send(users);
+    } catch (err) {
+      next(err);
+    }
   },
 
-  getUser: (req, res) => {
+  getUser: async (req, res, next) => {
     const { id } = req.params;
-    const user = userService.getById(id);
-    res.status(200).send(user);
+    try {
+      const user = await userService.getById(id);
+      res.send(user);
+    } catch (err) {
+      next(err);
+    }
   },
 
-  postUser: (req, res) => {
+  postUser: async (req, res, next) => {
     const user = req.body;
     const result = userSchema.validate(user);
-    userService.createOne(user);
-    const response = !!result.error
-      ? result.error.details
-      : "User created successfully";
-    const status = !!result.error ? 400 : 201;
-    res.status(status).send(response);
+    try {
+      if (!!result.error) {
+        const message = result.error.details[0].message;
+        throw new Error(message);
+      }
+      await userService.createOne(user);
+      res.send(!!result.error ? result.error.details : result.value);
+    } catch (err) {
+      next(err);
+    }
   },
 
-  deleteUser: (req, res) => {
+  deleteUser: async (req, res, next) => {
     const { id } = req.params;
-    userService.deleteOne(id);
-    const status = !!result.error ? 400 : 204;
-    res.status(status).send("User deleted successfully");
+    try {
+      await userService.deleteOne(id);
+      res.send("User deleted successfully");
+    } catch (err) {
+      next(err);
+    }
   },
 
-  putUser: (req, res) => {
+  putUser: async (req, res) => {
     const { id } = req.params;
     const user = req.body;
     const result = userSchema.validate(user);
-    userService.updateOne(user, id);
-    const response = !!result.error
-      ? result.error.details
-      : "User updated successfully";
-    const status = !!result.error ? 400 : 200;
-    res.status(status).send(response);
+    try {
+      if (!!result.error) {
+        const message = result.error.details[0].message;
+        throw new Error(message);
+      }
+      await userService.updateOne(user, id);
+      res.send(!result.error && result.value);
+    } catch (err) {
+      next(err);
+    }
   }
 };

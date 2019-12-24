@@ -16,9 +16,6 @@ app.use(morgan("dev"));
 // routes
 app.use("/", require("./routes"));
 app.use("/users", require("./routes/users"));
-app.use(function(req, res, next) {
-  next(createError(404));
-});
 app.use(errorHandler);
 
 app.listen(app.get("port"), () => {
