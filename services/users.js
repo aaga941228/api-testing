@@ -1,7 +1,7 @@
 const { userModel } = require("../database/sequelize");
 
 const userService = {
-  getAll: () => userModel.findAll(),
+  getAll: (limit, offset, order) => userModel.findAll({ order, offset, limit }),
   getById: id => userModel.findOne({ where: { id } }),
   createOne: user => userModel.create(user),
   updateOne: (user, id) => userModel.update(user, { where: { id } }),

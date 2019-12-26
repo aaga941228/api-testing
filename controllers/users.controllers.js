@@ -3,8 +3,13 @@ const userSchema = require("../schemas/users");
 
 module.exports = {
   getUsers: async (req, res, next) => {
+    const pagination = parseInt(req.query.pag) || 1;
+    const sorted = req.query.sorted;
     try {
-      const users = await userService.getAll();
+      const offset = pagination * 5 - 5;
+      const limit = 5;
+      const order = !!sorted ? [["firstName", "ASC"]] : [];
+      const users = await userService.getAll(limit, offset, order);
       res.send(users);
     } catch (err) {
       next(err);
@@ -27,10 +32,12 @@ module.exports = {
     try {
       if (!!result.error) {
         const message = result.error.details[0].message;
-        throw new Error(message);
+        const error = new Error(message);
+        next(error);
+      } else {
+        await userService.createOne(user);
+        res.send(!!result.error ? result.error.details : result.value);
       }
-      await userService.createOne(user);
-      res.send(!!result.error ? result.error.details : result.value);
     } catch (err) {
       next(err);
     }
@@ -53,10 +60,12 @@ module.exports = {
     try {
       if (!!result.error) {
         const message = result.error.details[0].message;
-        throw new Error(message);
+        const error = new Error(message);
+        next(error);
+      } else {
+        await userService.updateOne(user, id);
+        res.send(!result.error && result.value);
       }
-      await userService.updateOne(user, id);
-      res.send(!result.error && result.value);
     } catch (err) {
       next(err);
     }
