@@ -4,7 +4,7 @@ const userSchema = require("../schemas/users");
 module.exports = {
   getUsers: async (req, res, next) => {
     const pagination = parseInt(req.query.pag) || 1;
-    const sorted = req.query.sorted;
+    const { sorted } = req.query;
     try {
       const offset = pagination * 5 - 5;
       const limit = 5;
@@ -20,6 +20,19 @@ module.exports = {
     const { id } = req.params;
     try {
       const user = await userService.getById(id);
+      res.send(user);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  getUserByFirstName: async (req, res, next) => {
+    const { firstName } = req.query;
+    try {
+      const user = await userService.getByFirstName(firstName);
+      if (user.length === 0) {
+        throw new Error("There´s no results");
+      }
       res.send(user);
     } catch (err) {
       next(err);

@@ -2,6 +2,7 @@ const router = require("express").Router();
 const {
   getUsers,
   getUser,
+  getUserByFirstName,
   postUser,
   deleteUser,
   putUser
@@ -11,8 +12,9 @@ const userService = require("../services/users");
 
 router
   .get("/", getUsers)
-  .get("/:id", exists(userService), getUser)
   .post("/", postUser)
+  .get("/search", getUserByFirstName)
+  .get("/:id", exists(userService), getUser)
   .put("/:id", exists(userService), putUser)
   .delete("/:id", exists(userService), deleteUser);
 
