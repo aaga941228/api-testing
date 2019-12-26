@@ -66,7 +66,7 @@ module.exports = {
     }
   },
 
-  putUser: async (req, res) => {
+  putUser: async (req, res, next) => {
     const { id } = req.params;
     const user = req.body;
     const result = userSchema.validate(user);
