@@ -7,6 +7,7 @@ const {
   putUser
 } = require("../controllers/users.controllers");
 const exists = require("../middlewares/exists");
+const validateQueries = require("../middlewares/validateQueries");
 const userService = require("../services/users");
 
 router

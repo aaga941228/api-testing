@@ -1,6 +1,7 @@
 const userService = require("../services/users");
 const userSchema = require("../schemas/users");
 const { Op } = require("sequelize");
+const { validateName, validateBirthYear } = require("../utils/validateQueries");
 
 module.exports = {
   getUsers: async (req, res, next) => {
@@ -20,34 +21,43 @@ module.exports = {
       const params = { where: {}, order, limit, offset };
 
       if (!!firstName) {
-        params.where.firstName = firstName;
+        validateName(firstName);
+        params.where.firstName = { [Op.like]: `%${firstName}%` };
       }
+
       if (!!lastName) {
-        params.where.lastName = lastName;
+        validateName(lastName);
+        params.where.lastName = { [Op.like]: `%${lastName}%` };
       }
+
       if (!!birthYear) {
         const properties = Object.getOwnPropertyNames(birthYear);
         if (properties.length !== 1) {
+          validateBirthYear(birthYear);
           params.where.birthYear = birthYear;
         }
         switch (properties[0]) {
           case "lt":
+            validateBirthYear(birthYear.lt);
             params.where.birthYear = { [Op.lt]: birthYear.lt };
             break;
           case "gt":
+            validateBirthYear(birthYear.gt);
             params.where.birthYear = { [Op.gt]: birthYear.gt };
             break;
           case "lte":
+            validateBirthYear(birthYear.lte);
             params.where.birthYear = { [Op.lte]: birthYear.lte };
             break;
           case "gte":
+            validateBirthYear(birthYear.gte);
             params.where.birthYear = { [Op.gte]: birthYear.gte };
             break;
         }
       }
 
       const users = await userService.getAll(params);
-      res.send(users);
+      res.send(users.length === 0 ? "no results" : users);
     } catch (err) {
       next(err);
     }
