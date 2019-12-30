@@ -1,15 +1,52 @@
 const userService = require("../services/users");
 const userSchema = require("../schemas/users");
+const { Op } = require("sequelize");
 
 module.exports = {
   getUsers: async (req, res, next) => {
-    const pagination = parseInt(req.query.pag) || 1;
-    const { sorted } = req.query;
+    const {
+      page = 1,
+      per_page = 10,
+      sort,
+      sort_by = "ASC",
+      firstName,
+      lastName,
+      birthYear
+    } = req.query;
     try {
-      const offset = pagination * 5 - 5;
-      const limit = 5;
-      const order = !!sorted ? [["firstName", "ASC"]] : [];
-      const users = await userService.getAll(limit, offset, order);
+      const limit = parseInt(per_page);
+      const offset = parseInt(per_page) * (parseInt(page) - 1);
+      const order = !!sort ? [[`${sort}`, `${sort_by}`]] : [];
+      const params = { where: {}, order, limit, offset };
+
+      if (!!firstName) {
+        params.where.firstName = firstName;
+      }
+      if (!!lastName) {
+        params.where.lastName = lastName;
+      }
+      if (!!birthYear) {
+        const properties = Object.getOwnPropertyNames(birthYear);
+        if (properties.length !== 1) {
+          params.where.birthYear = birthYear;
+        }
+        switch (properties[0]) {
+          case "lt":
+            params.where.birthYear = { [Op.lt]: birthYear.lt };
+            break;
+          case "gt":
+            params.where.birthYear = { [Op.gt]: birthYear.gt };
+            break;
+          case "lte":
+            params.where.birthYear = { [Op.lte]: birthYear.lte };
+            break;
+          case "gte":
+            params.where.birthYear = { [Op.gte]: birthYear.gte };
+            break;
+        }
+      }
+
+      const users = await userService.getAll(params);
       res.send(users);
     } catch (err) {
       next(err);
@@ -20,19 +57,6 @@ module.exports = {
     const { id } = req.params;
     try {
       const user = await userService.getById(id);
-      res.send(user);
-    } catch (err) {
-      next(err);
-    }
-  },
-
-  getUserByFirstName: async (req, res, next) => {
-    const { firstName } = req.query;
-    try {
-      const user = await userService.getByFirstName(firstName);
-      if (user.length === 0) {
-        throw new Error("There´s no results");
-      }
       res.send(user);
     } catch (err) {
       next(err);

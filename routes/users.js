@@ -2,7 +2,6 @@ const router = require("express").Router();
 const {
   getUsers,
   getUser,
-  getUserByFirstName,
   postUser,
   deleteUser,
   putUser
@@ -11,11 +10,14 @@ const exists = require("../middlewares/exists");
 const userService = require("../services/users");
 
 router
-  .get("/", getUsers)
-  .post("/", postUser)
-  .get("/search", getUserByFirstName)
-  .get("/:id", exists(userService), getUser)
-  .put("/:id", exists(userService), putUser)
-  .delete("/:id", exists(userService), deleteUser);
+  .route("/")
+  .get(getUsers)
+  .post(postUser);
+
+router
+  .route("/:id", exists(userService))
+  .get(getUser)
+  .put(putUser)
+  .delete(deleteUser);
 
 module.exports = router;
